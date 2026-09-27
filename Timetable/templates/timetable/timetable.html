@@ -1,0 +1,100 @@
+{% load static%}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Class Timetable</title>
+
+    <link rel = "stylesheet" href="{% static 'timetable/ style.css' %}">
+</head>
+
+<body>
+    <div class = "container">
+        <div class = "header">
+            <h1> Class Timetable </h1>
+            <p>EEE Chuka Uni</p> 
+        </div>
+
+        <div class="timetable-card">
+
+            {% if entries %}
+            
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Unit</th>
+                        <th>Lecturer</th>
+                        <th>Mode</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for entry in entries%}
+
+                    <tr>
+                        <td>
+                            {{entry.day}}
+                        </td>
+
+                        <td>
+                            {{entry.start_time}} - {{entry.end_time}}
+                        </td>
+
+                        <td>
+                            <div class = "unit-code">
+                                {{entry.unit_code}}
+                            </div>
+
+                            <div class = "unit-name">
+                                {{entry.unit}}
+                            </div>
+                        </td>
+                        <td>
+                            {{entry.lecturer}}
+                        </td>
+
+                        <td>
+
+                            {% if entry.mode == "Physical" %}
+                                <span class="mode physical">
+                                    physical
+                                </span>
+                            {% else %}
+                                <span class="mode online">
+                                    Online
+                                </span>
+                            {% endif %}
+                            </td>
+
+                            <td>
+                                {% if entry.mode == "Physical" %}
+                                    {{ entry.room }}
+                                {% else %}
+                                    {% if entry.online_link %}
+                                        <a href = "{{ entry.online_link }}" target="_blank" class= "join-button">
+                                            Join Class
+                                        </a>
+                                    {% else %}
+                                        Online Class
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+                {% else %}
+                    <div class = "empty-message">
+                        <h3>No classes scheduled</h3>
+                        <p> Your timetable is currently empty. </p>
+                    </div>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</body>
