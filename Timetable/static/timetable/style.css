@@ -98,6 +98,18 @@ tr :hover {
     color: #6b7280;
 }
 
+.day-section {
+    margin-bottom: 30px;
+}
+
+.day-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 /* Mobile*/
 
 @media (max-width: 768px) {
@@ -105,15 +117,65 @@ tr :hover {
         padding: 20px 12px;
     }
 
-    .timetable-card {
-        overflow-x: auto;
-    }
-
-    table {
-        min-width: 850px;
-    }
-
     .header h1 {
         font-size: 24px;
+    }
+
+    .day-title {
+        font-size: 18px;
+    }
+
+    .timetable-card {
+        background: transparent;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    table,
+    thead,
+    tbody,
+    tr,
+    td {
+        display: block;
+        width: 100%;
+    }
+    thead {
+        display: none;
+    }
+
+    tr {
+        background: white;
+        margin-bottom: 15px;
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    td {
+        border: none;
+        padding: 5px 0;
+    }
+
+    td:first-child {
+        font-weight: bold;
+        font-size: 14px;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+
+    td:nth-child(2) {
+        margin-bottom: 8px;
+    }
+
+    .unit-code{
+        font-size: 17px;
+    }
+
+    .unit-name {
+        font-size: 14px;
+    }
+
+    .join-button {
+        margin-top: 5px;
     }
 }

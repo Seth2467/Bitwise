@@ -5,96 +5,99 @@
 <head>
     <title>Class Timetable</title>
 
-    <link rel = "stylesheet" href="{% static 'timetable/ style.css' %}">
+    <link rel = "stylesheet" href="{% static 'timetable/style.css' %}">
 </head>
 
 <body>
     <div class = "container">
         <div class = "header">
             <h1> Class Timetable </h1>
-            <p>EEE Chuka Uni</p> 
+            <p>Electical and Electronic Engineering</p> 
         </div>
 
-        <div class="timetable-card">
+        {% regroup entries by day as day_groups %}
 
-            {% if entries %}
-            
-            <table>
+        {% for day in day_groups %}
+            <div class= "day-section">
+                
+                <div class= "day.title">
+                    {{ day.grouper}}
+                </div>
 
-                <thead>
-                    <tr>
-                        <th>Day</th>
-                        <th>Time</th>
-                        <th>Unit</th>
-                        <th>Lecturer</th>
-                        <th>Mode</th>
-                        <th>Location</th>
-                    </tr>
-                </thead>
+                <div class="timetable-card">
 
-                <tbody>
+                    <table>
 
-                    {% for entry in entries%}
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Unit</th>
+                                <th>Lecturer</th>
+                                <th>Mode</th>
+                                <th>Room</th>
+                            </tr>
+                        </thead>
 
-                    <tr>
-                        <td>
-                            {{entry.day}}
-                        </td>
+                        <tbody>
+                            {% for entry in day.list %}
+                                <tr>
+                                    <td>
+                                        {{ entry.start_time }}
+                                        {{ entry.end_time }}
+                                    </td>
+                                    
+                                    <td>
+                                        <div class="unit-code">
+                                            {{ entry.unit_code }}
+                                        </div>
+                                        <div class="unit-name">
+                                            {{entry.unit}}
+                                        </div>
+                                    </td>
 
-                        <td>
-                            {{entry.start_time}} - {{entry.end_time}}
-                        </td>
+                                    <td>
+                                        {{ entry.lecturer }}
+                                    </td>
 
-                        <td>
-                            <div class = "unit-code">
-                                {{entry.unit_code}}
-                            </div>
+                                    <td>
 
-                            <div class = "unit-name">
-                                {{entry.unit}}
-                            </div>
-                        </td>
-                        <td>
-                            {{entry.lecturer}}
-                        </td>
+                                        {% if entry.mode == "Physical"%}
+                                            <span class="mode physical">
+                                                Physical
+                                            </span>
+                                        {% else %}
+                                            <span class="mode online">
+                                                Online
+                                            </span>
+                                        {% endif %}
+                                    </td>
 
-                        <td>
+                                    <td>
 
-                            {% if entry.mode == "Physical" %}
-                                <span class="mode physical">
-                                    physical
-                                </span>
-                            {% else %}
-                                <span class="mode online">
-                                    Online
-                                </span>
-                            {% endif %}
-                            </td>
-
-                            <td>
-                                {% if entry.mode == "Physical" %}
-                                    {{ entry.room }}
-                                {% else %}
-                                    {% if entry.online_link %}
-                                        <a href = "{{ entry.online_link }}" target="_blank" class= "join-button">
-                                            Join Class
-                                        </a>
-                                    {% else %}
-                                        Online Class
-                                    {% endif %}
-                                {% endif %}
-                            </td>
-                        </td>
-                        {% endfor %}
-                    </tr>
-                </tbody>
-                {% else %}
-                    <div class = "empty-message">
-                        <h3>No classes scheduled</h3>
-                        <p> Your timetable is currently empty. </p>
-                    </div>
-                {% endif %}
-            </table>
-        </div>
+                                        {% if entry.mode == "Physical"%}
+                                            {{ entry.room }}
+                                        {% else %}
+                                            {% if entry.omline_link %}
+                                                <a href="{{entry.online_link}}" target="_blank" class="join-button">
+                                                    Join Class
+                                                </a>
+                                            {% else %}
+                                                Online class
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty.message">
+                <h3>No classes scheduled</h3>
+                <p>Your timetable is currently empty.</p>
+            </div>
+        {% endfor %}
     </div>
 </body>
+</html>
