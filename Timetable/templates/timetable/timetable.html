@@ -6,6 +6,8 @@
     <title>Class Timetable</title>
 
     <link rel = "stylesheet" href="{% static 'timetable/style.css' %}">
+
+    <script src=" {% static 'timetable/script.js' %}" defer ></script>
 </head>
 
 <body>
@@ -14,17 +16,42 @@
             <h1> Class Timetable </h1>
             <p>Electical and Electronic Engineering</p> 
         </div>
+        <div class="search-box">
+            <input 
+                type="text"
+                id="timetableSearch"
+                placeholder="Search by unit code or unit name..."
+                >
+        </div>
+        <div class="day-filter">
+            <label for = "dayFilter">Show:</label>
+
+            <select id="dayFilter">
+                <option value="All">All Days</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+            </select>
+        </div>
 
         {% regroup entries by day as day_groups %}
 
         {% for day in day_groups %}
-            <div class= "day-section">
+            <div class= "day-section" 
+            data.day="{{day.grouper}}
+            data-section-day="{{day.grouper}}"
+            ">
                 
                 <div class= "day.title">
                     {{ day.grouper}}
+                    {% if day.grouper == today %}
+                        <span class="today-label">TODAY</span>
+                    {% endif %}
                 </div>
 
-                <div class="timetable-card">
+                <div class="timetable-card" {% if day.grouper == today %} today-card {% endif %}>
 
                     <table>
 
@@ -40,10 +67,27 @@
 
                         <tbody>
                             {% for entry in day.list %}
-                                <tr>
-                                    <td>
-                                        {{ entry.start_time }}
-                                        {{ entry.end_time }}
+                                <tr class= "
+                                    timetable-row
+                                    {% if day.grouper == today %} today-row {% endif %}
+                                    {% if entry.status %} status-{{ entry.status|lower}}{% endif %}"
+                                    data-search="{{entry.unit_code}} {{entry.unit}}"
+                                    data-day = "{{entry.day}}"
+                                    >
+                                    <td class="time-cell">
+                                        {% if entry.status %}
+                                            <span class="status-indicator {{entry.status}}"></span>
+                                        {% endif %}
+                                        <span class = "time-text">
+                                            {{ entry.start_time }}
+                                            {{ entry.end_time }}
+                                        </span>
+                                        
+                                        {% if entry.status %}
+                                            <div class="class-status {{entry.status|lower}}">
+                                                {{ entry.status }}
+                                            </div>
+                                        {% endif %}
                                     </td>
                                     
                                     <td>

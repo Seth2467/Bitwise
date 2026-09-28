@@ -21,6 +21,7 @@ class TimetableEntry(models.Model):
     unit = models.CharField( max_length=50)
     lecturer = models.CharField( max_length=50)
     mode = models.CharField(max_length=10, choices = MODE_CHOICES, default= 'Physical')
+    bounced = models.BooleanField(default=False)
     room = models.CharField( max_length=10, blank = True)
     online_link = models.URLField(blank=True)
     start_time = models.TimeField()

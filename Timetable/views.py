@@ -1,7 +1,12 @@
 from django.shortcuts import render
 from .models import TimetableEntry
+from datetime import datetime
+
 # Create your views here.
 def timetable(request):
+
+    today = datetime.now().strftime('%A')
+    current_time = datetime.now().time()
 
     day_order = {
         'Monday': 1,
@@ -11,6 +16,19 @@ def timetable(request):
         'Friday':5,
     }
     entries = TimetableEntry.objects.all()
+
+    for entry in entries:
+        if entry.bounced:
+            entry.status = 'Bounced'
+        
+        elif entry.day != today:
+            entry.status = ''
+        elif current_time < entry.start_time:
+            entry.status = 'Upcoming'
+        elif current_time >= entry.end_time:
+            entry.status = 'Finished'
+        else:
+            entry.status = 'Ongoing'
     entries = sorted(
         entries,
         key= lambda entry:(
@@ -19,4 +37,4 @@ def timetable(request):
         )
     )
 
-    return render(request, 'timetable/timetable.html', {'entries': entries})
+    return render(request, 'timetable/timetable.html', {'entries': entries, 'today': today})
