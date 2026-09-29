@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from Timetable import views
+from Timetable import views as timetable_views
+from exams import views as exam_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path( 'timetable/', views.timetable, name= 'timetable')
+    path( 'timetable/', timetable_views.timetable, name= 'timetable'),
+    path( 'exams/', exam_views.exam_timetable, name = 'exam_timetable'),
 ]

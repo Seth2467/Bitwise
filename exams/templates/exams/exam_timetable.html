@@ -1,0 +1,142 @@
+{% load static  %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
+
+    <title>Exam Timetable</title>
+    
+    <link rel="stylesheet" href="{% static 'exams/style.css' %}">
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <h1>Exam Timetable</h1>
+            <p>Electrical and Electrical Engineering</P>
+
+        </div>
+
+        <div class="exam-list">
+            {% for exam in exams %}
+
+                <div class="exam-card">
+
+                    <div class="exam-header">
+
+                        <div>
+
+                            <span class="unit-code">
+                                {{ exam.unit.code }}
+                            </span>
+
+                            <h2>{{ exam.unit.name }}</h2>
+
+                        </div>
+
+                        <span class="exam-type">
+                            {{ exam.exam_type}}
+                        </span>
+
+                    </div>
+
+                    <div class;="exam-details">
+
+                        {%  if exam.mode == "Take-away" %}
+                            <div class="detail">
+                                <span class="label">
+                                    Mode
+                                </span>
+                                <span class="value">
+                                    Take-away
+                                </span>
+
+                            </div>
+                            {% if exam.due_date %}
+                                <div class="detail">
+                                    <span class="label">
+                                        Due Date
+                                    </span>
+
+                                    <span class="value">
+                                        {{ exam.due_date }}
+                                    </span>
+                                </div>
+                            {% endif %}
+                        
+                        {% else %}
+                                {% if exam.exam_date %}
+                                    <div class="detail">
+
+                                        <span class="label">
+                                            Date
+                                        </span>
+
+                                        <span class="-value">
+                                            {{ exam.exam_date }}
+                                        </span>
+                                    </div>
+                                {% endif %}
+
+                                {% if exam.start_time and exam.end_time %}
+                                    <div class="detail">
+
+                                        <span class="label">
+                                            Time
+                                        </span>
+
+                                        <span>
+                                            {{ exam.start_time }} - {{ exam.end_time }}
+                                        </span>
+
+                                    </div>
+                                {% endif %}
+
+                                <div class="detail">
+
+                                    <span class="label">
+                                        Mode
+                                    </span>
+
+                                    <span class="value">
+                                        {{exam.mode}}
+                                    </span>
+                                </div>
+
+                                {% if exam.room %}
+                                    <div class="detail">
+
+                                        <span class="label">
+                                            Room
+                                        </span>
+
+                                        <span class="value">
+                                            {{exam.room}}
+                                        </span>
+
+                                    </div>
+                                {% endif %}
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% empty %}
+                
+                <div class="empty-message">
+
+                    <h2>No Exams or CATS available</h2>
+                    <p> The Exam Timetable has not been published yet.</P>
+
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
