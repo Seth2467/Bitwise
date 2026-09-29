@@ -18,15 +18,41 @@
     <div class="container">
 
         <div class="header">
-            <h1>Exam Timetable</h1>
+            <h1>Exams and CATs Timetable</h1>
             <p>Electrical and Electrical Engineering</P>
 
         </div>
+        <div class="exam-controls">
+            <div class="exam-search">
+                <input
+                    type="text"
+                    id="examSearch"
+                    placeholder="Search by unit code or unit name..."
+                >
+            </div>
+        </div>
 
+        <div class="exam-filters">
+            <label for ="examTypeFilter">Show:</label>
+
+            <select id="examTypeFilter">
+                <option value="all">All exams</option>
+                <option value="main">Main exams</option>
+                <option value="cat">CATs</option>
+                <option value="takeaway">Take-away CATs</option>
+            </select>
+
+        </div>
+
+        </div>
         <div class="exam-list">
             {% for exam in exams %}
 
-                <div class="exam-card">
+                <div class="exam-card"
+                    data-search="{{ exam.unit.code|lower }} {{ exam.unit.name|lower }}"
+                    data-exam-type="{{ exam.exam_type|lower }}"
+                    data-mode="{{ exam.mode|lower }}"
+                >
 
                     <div class="exam-header">
 
@@ -40,9 +66,21 @@
 
                         </div>
 
-                        <span class="exam-type">
-                            {{ exam.exam_type}}
+                        <span class="exam-type {% if exam.mode == 'Take-away'%}takeaway-badge{% elif exam.exam_type == 'Main'%}main-badge
+                        {% else %}cat-badge{% endif %}">
+                            {% if exam.mode == 'Take-away' %}
+                                TAKE-AWAY CAT 
+                            {% else %}
+                                {{ exam.exam_type}}
+                            {% endif %}
+                            
                         </span>
+
+                        {% if exam.is_cancelled %}
+                            <span class="exam-type cancelled-badge">
+                                Cancelled
+                            </span>
+                        {% endif %}
 
                     </div>
 
@@ -59,13 +97,24 @@
 
                             </div>
                             {% if exam.due_date %}
+
+                                <div class="detail">
+                                    <span class="label">
+                                        Due Day
+                                    </span>
+
+                                    <span class="value">
+                                        {{ exam.due_date|date:"l" }}
+                                    </span>
+                                </div>
+
                                 <div class="detail">
                                     <span class="label">
                                         Due Date
                                     </span>
 
                                     <span class="value">
-                                        {{ exam.due_date }}
+                                        {{ exam.due_date|date:"d F Y" }}
                                     </span>
                                 </div>
                             {% endif %}
@@ -75,11 +124,20 @@
                                     <div class="detail">
 
                                         <span class="label">
-                                            Date
+                                            Day
                                         </span>
 
                                         <span class="-value">
-                                            {{ exam.exam_date }}
+                                            {{ exam.exam_date|date:"l" }}
+                                        </span>
+                                    </div>
+
+                                    <div class="detail">
+                                        <span class="label">
+                                            Date
+                                        </span>
+                                        <span class="value">
+                                            {{ exam.exam_date|date:"d F Y"}}
                                         </span>
                                     </div>
                                 {% endif %}
@@ -123,6 +181,14 @@
                                     </div>
                                 {% endif %}
                         {% endif %}
+                        {% if exam.notes %}
+                            <div class="detail exam-notes">
+                                <span class="label">Reminder</span>
+                                <span class="value">
+                                    {{ exam.notes|linebreaksbr }}
+                                </span>
+                            </div>
+                        {% endif %}
 
                     </div>
                 </div>
@@ -139,4 +205,39 @@
         </div>
     </div>
 </body>
+<script>
+    const searchInput = document.getElementById("examSearch");
+    const typeFilter = document.getElementById("examTypeFilter");
+    const examCards = document.querySelectorAll(".exam-card");
+
+    function filterExams(){
+        const searchText = searchInput.value.toLowerCase().trim();
+        const selectedType = typeFilter.value;
+
+        examCards.forEach(function (card) {
+            const searchableText = card.dataset.search;
+            const examType = card.dataset.examType;
+            const examMode = card.dataset.mode;
+
+            const matchesSearch = searchableText.includes(searchText);
+            let matchesType = true;
+            if (selectedType === "main") {
+                matchesType = examType ==="main";
+
+            } else if (selectedType === "cat") {
+                matchesType = examType === "cat" && examMode !== "takeaway";
+            } else if (selectedType === "takeaway") {
+                matchesType = examMode === "take-away"
+            }
+
+            card.style.display = matchesSearch && matchesType 
+            ? "" 
+            : "none";
+
+        });
+    }
+
+    searchInput.addEventListener("input", filterExams);
+    typeFilter.addEventListener("change", filterExams);
+</script>
 </html>

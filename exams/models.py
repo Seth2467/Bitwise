@@ -28,5 +28,5 @@ class Exam(models.Model):
     is_cancelled = models.BooleanField( default = False )
 
     def __str__(self):
-        return f"{self.unit.code} - {self.exam_type} - {self.date}"
+        return f"{self.unit.code} - {self.exam_type} - {self.exam_date or self.due_date}"
     
