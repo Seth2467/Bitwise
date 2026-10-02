@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ unit.code }} - {{ category }}</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/resource_list_by_category.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <a href="{% url 'unit_resource_categories' unit.id %}"
+           class="back-link">
+            ← Back to Categories
+        </a>
+
+        <h1>{{ unit.code }}</h1>
+
+        <p class="subtitle">
+            {{ unit.name }}
+        </p>
+
+        <h2>{{ category }}</h2>
+
+        <div class="resource-list">
+
+            {% for resource in resources %}
+
+                <div class="resource-card">
+
+                    <div class="resource-info">
+
+                        <h3>{{ resource.title }}</h3>
+
+                        {% if resource.description %}
+                            <p>{{ resource.description }}</p>
+                        {% endif %}
+
+                    </div>
+
+                    {% if resource.file %}
+                        <a href="{{ resource.file.url }}"
+                           class="download-link"
+                           target="_blank">
+                            Open PDF →
+                        </a>
+                    {% endif %}
+
+                </div>
+
+            {% empty %}
+
+                <div class="empty-message">
+                    No resources are available in this category yet.
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</body>
+</html>

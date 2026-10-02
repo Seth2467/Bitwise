@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ unit.code }} - Study Resources</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/unit_resource_categories.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <a href="{% url 'resource_list' %}" class="back-link">
+            ← Back to Units
+        </a>
+
+        <h1>{{ unit.code }}</h1>
+
+        <p class="subtitle">
+            {{ unit.name }}
+        </p>
+
+        <h2>Choose a Resource Category</h2>
+
+        <div class="category-grid">
+
+    <a href="{% url 'resource_list_by_category' unit.id 'lecture_notes' %}"
+       class="category-card">
+        <h3>Lecture Notes</h3>
+        <p>Course notes and learning materials.</p>
+    </a>
+
+    <a href="{% url 'resource_list_by_category' unit.id 'past_paper' %}"
+       class="category-card">
+        <h3>Past Papers</h3>
+        <p>Previous examination papers.</p>
+    </a>
+
+    <a href="{% url 'resource_list_by_category' unit.id 'past_cat' %}"
+       class="category-card">
+        <h3>CATs</h3>
+        <p>Previous continuous assessment tests.</p>
+    </a>
+
+    <a href="{% url 'resource_list_by_category' unit.id 'reference' %}"
+       class="category-card">
+        <h3>Reference Materials</h3>
+        <p>Books, articles and other references.</p>
+    </a>
+
+    <a href="{% url 'resource_list_by_category' unit.id 'lab_material' %}"
+       class="category-card">
+        <h3>Laboratory Materials</h3>
+        <p>Laboratory manuals and materials.</p>
+    </a>
+
+    <a href="{% url 'resource_list_by_category' unit.id 'solution' %}"
+       class="category-card">
+        <h3>Solutions</h3>
+        <p>Solutions and marking schemes.</p>
+    </a>
+
+    <a href="{% url 'resource_list_by_category' unit.id 'other' %}"
+       class="category-card">
+        <h3>Other</h3>
+        <p>Other useful learning resources.</p>
+    </a>
+
+</div>
+
+    </div>
+
+</body>
+</html>

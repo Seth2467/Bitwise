@@ -18,9 +18,22 @@ from django.contrib import admin
 from django.urls import path
 from Timetable import views as timetable_views
 from exams import views as exam_views
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import include 
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path( 'timetable/', timetable_views.timetable, name= 'timetable'),
     path( 'exams/', exam_views.exam_timetable, name = 'exam_timetable'),
+    path( 'resources/', include('resources.urls')),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    ) 
+    

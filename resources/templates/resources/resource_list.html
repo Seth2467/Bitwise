@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Study Resources</title>
+</head>
+<body>
+    <h1>Study Resources</h1>
+    <p>Find lectuer notes, past papers, CATs and other learning materials.</p>
+
+    {% for resource in resources %}
+        <article>
+            <h2>{{ resource.title }}</h2>
+
+            <p>
+                <strong>Unit:</strong>
+                {{ resource.unit.code }} - {{ resource.unit.name }}
+            </p>
+
+            <p>
+                <strong>Category</strong>
+                {{ resource.get_category_display }}
+            </p>
+
+            {% if resource.description %}
+                <p>{{ resource.description }}</p>
+            {% endif %}
+
+            {% if resource.file %}
+                <p>
+                    <a href="{{ resource.file.url }}" download>Download resource</a>
+                </p>
+            {% endif %}
+        </article>
+        <hr>
+    {% empty %}
+        <p>No published study resource are available yet.</p>
+    {% endfor %}
+</body>
+</html>
