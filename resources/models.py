@@ -1,5 +1,6 @@
 from django.db import models
 from units.models import Unit
+from cloudinary.models import CloudinaryField
 # Create your models here.
 
 class StudyResource(models.Model):
@@ -20,7 +21,7 @@ class StudyResource(models.Model):
 
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name= 'resources')
     title= models.CharField( max_length=200)
-    file = models.FileField(upload_to='resources/', blank=True, null=True)
+    file = CloudinaryField('file', resource_type='raw', blank=True, null=True)
     description = models.TextField(blank=True)
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
