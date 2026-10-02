@@ -169,6 +169,7 @@ h1 {
 }
 
 @media (max-width: 400px) {
+   
     body {
         padding: 25px 12px;
     }

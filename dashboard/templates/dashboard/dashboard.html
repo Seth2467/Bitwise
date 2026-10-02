@@ -1,0 +1,208 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet"
+      href="{% static 'css/navigation.css' %}">
+</head>
+
+<body>
+    <nav class="navbar">
+
+    <a href="{% url 'dashboard' %}" class="nav-brand">
+        Student Portal
+    </a>
+
+    <div class="nav-links">
+
+        <a href="{% url 'dashboard' %}" class="active">
+            Dashboard
+        </a>
+
+        <a href="{% url 'timetable' %}">
+            Timetable
+        </a>
+
+        <a href="{% url 'exam_timetable' %}">
+            Exam Timetable
+        </a>
+
+        <a href="{% url 'resource_list' %}">
+            Study Resources
+        </a>
+
+    </div>
+
+</nav>
+
+    <div class="container">
+
+        <header class="dashboard-header">
+
+            <p class="greeting">
+                {{ greeting }}
+            </p>
+
+            <h1>Your Dashboard</h1>
+
+            <p class="date">
+                {{ today|date:"l, F j, Y" }}
+            </p>
+
+        </header>
+
+
+        <section class="dashboard-grid">
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+                    <span class="card-label">Current Class</span>
+                </div>
+
+                {% if ongoing_class %}
+
+                    <span class="unit-code">
+                        {{ ongoing_class.unit_code }}
+                    </span>
+
+                    <h2>{{ ongoing_class.unit }}</h2>
+
+                    <p class="class-time">
+                        {{ ongoing_class.start_time }}
+                        -
+                        {{ ongoing_class.end_time }}
+                    </p>
+
+                    <p class="class-detail">
+                        {{ ongoing_class.lecturer }}
+                    </p>
+
+                    <span class="status">
+                        Ongoing
+                    </span>
+
+                {% else %}
+
+                    <h2>No class right now</h2>
+
+                    <p class="class-detail">
+                        You are currently free.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+                    <span class="card-label">Next Class</span>
+                </div>
+
+                {% if next_class %}
+
+                    <span class="unit-code">
+                        {{ next_class.unit_code }}
+                    </span>
+
+                    <h2>{{ next_class.unit }}</h2>
+
+                    <p class="class-time">
+                        {{ next_class.start_time }}
+                        -
+                        {{ next_class.end_time }}
+                    </p>
+
+                    <p class="class-detail">
+                        {{ next_class.lecturer }}
+                    </p>
+
+                {% else %}
+
+                    <h2>No more classes</h2>
+
+                    <p class="class-detail">
+                        You have no more classes today.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="dashboard-card exam-card">
+
+                <div class="card-header">
+                    <span class="card-label">Next Exam</span>
+                </div>
+
+                {% if next_exam %}
+
+                    <span class="unit-code">
+                        {{ next_exam.unit.code }}
+                    </span>
+
+                    <h2>{{ next_exam.unit.name }}</h2>
+
+                    <p class="exam-type">
+                        {{ next_exam.exam_type }}
+                    </p>
+
+                    <strong class="exam-countdown">
+                        {{ exam_label }}
+                    </strong>
+
+                {% else %}
+
+                    <h2>No upcoming exams</h2>
+
+                    <p class="class-detail">
+                        You are all clear for now.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <section class="quick-access">
+
+            <h2>Quick Access</h2>
+
+            <div class="quick-grid">
+
+                <a href="{% url 'timetable' %}" class="quick-card">
+                    <span>Timetable</span>
+                    <span>→</span>
+                </a>
+
+                <a href="{% url 'exam_timetable' %}" class="quick-card">
+                    <span>Exam Timetable</span>
+                    <span>→</span>
+                </a>
+
+                <a href="{% url 'resource_list' %}" class="quick-card">
+                    <span>Study Resources</span>
+                    <span>→</span>
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</body>
+</html>

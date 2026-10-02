@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'exams',
     'units',
     'resources',
+    'dashboard',
 ]
 
 MIDDLEWARE = [

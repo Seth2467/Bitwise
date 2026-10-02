@@ -9,10 +9,40 @@
     <title>Study Resources</title>
 
     <link rel="stylesheet" href="{% static 'css/unit_list.css' %}">
+    <link rel="stylesheet"
+      href="{% static 'css/navigation.css' %}">
 
 </head>
 
 <body>
+    <nav class="navbar">
+
+    <a href="{% url 'dashboard' %}" class="nav-brand">
+        Student Portal
+    </a>
+
+    <div class="nav-links">
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'timetable' %}">
+            Timetable
+        </a>
+
+        <a href="{% url 'exam_timetable' %}">
+            Exam Timetable
+        </a>
+
+        <a href="{% url 'resource_list' %}" class="active">
+            Study Resources
+        </a>
+
+    </div>
+
+</nav>
+    
     <div class="container">
 
         <h1>Study Resources</h1>

@@ -11,10 +11,39 @@
     <title>Exam Timetable</title>
     
     <link rel="stylesheet" href="{% static 'exams/style.css' %}">
+    <link rel="stylesheet"
+      href="{% static 'css/navigation.css' %}">
 
 </head>
 
 <body>
+    <nav class="navbar">
+
+    <a href="{% url 'dashboard' %}" class="nav-brand">
+        Student Portal
+    </a>
+
+    <div class="nav-links">
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'timetable' %}">
+            Timetable
+        </a>
+
+        <a href="{% url 'exam_timetable' %}" class="active">
+            Exam Timetable
+        </a>
+
+        <a href="{% url 'resource_list' %}">
+            Study Resources
+        </a>
+
+    </div>
+
+</nav>
     <div class="container">
 
         <div class="header">
