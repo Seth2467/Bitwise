@@ -1,59 +1,40 @@
-{% load static%}
+{% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Class Timetable</title>
 
-    <link rel = "stylesheet" href="{% static 'timetable/style.css' %}">
-    <link rel="stylesheet"
-      href="{% static 'css/navigation.css' %}">
+    <link rel="stylesheet" href="{% static 'timetable/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
 
-    <script src=" {% static 'timetable/script.js' %}" defer ></script>
+    <script src="{% static 'timetable/script.js' %}" defer></script>
 </head>
 
 <body>
-    <nav class="navbar">
 
-    <a href="{% url 'dashboard' %}" class="nav-brand">
-        Student Portal
-    </a>
+    {% include 'partials/navigation.html' %}
 
-    <div class="nav-links">
+    <div class="container">
 
-        <a href="{% url 'dashboard' %}">
-            Dashboard
-        </a>
-
-        <a href="{% url 'timetable' %}" class="active">
-            Timetable
-        </a>
-
-        <a href="{% url 'exam_timetable' %}">
-            Exam Timetable
-        </a>
-
-        <a href="{% url 'resource_list' %}">
-            Study Resources
-        </a>
-
-    </div>
-
-</nav>
-    <div class = "container">
-        <div class = "header">
-            <h1> Class Timetable </h1>
-            <p>Electical and Electronic Engineering</p> 
+        <div class="header">
+            <h1>Class Timetable</h1>
+            <p>Electrical and Electronic Engineering</p>
         </div>
+
         <div class="search-box">
-            <input 
+            <input
                 type="text"
                 id="timetableSearch"
                 placeholder="Search by unit code or unit name..."
-                >
+            >
         </div>
+
         <div class="day-filter">
-            <label for = "dayFilter">Show:</label>
+            <label for="dayFilter">Show:</label>
 
             <select id="dayFilter">
                 <option value="All">All Days</option>
@@ -68,19 +49,23 @@
         {% regroup entries by day as day_groups %}
 
         {% for day in day_groups %}
-            <div class= "day-section" 
-            data.day="{{day.grouper}}
-            data-section-day="{{day.grouper}}"
-            ">
-                
-                <div class= "day.title">
-                    {{ day.grouper}}
+
+            <div
+                class="day-section"
+                data-section-day="{{ day.grouper }}"
+            >
+
+                <div class="day-title">
+                    {{ day.grouper }}
+
                     {% if day.grouper == today %}
                         <span class="today-label">TODAY</span>
                     {% endif %}
                 </div>
 
-                <div class="timetable-card" {% if day.grouper == today %} today-card {% endif %}>
+                <div
+                    class="timetable-card{% if day.grouper == today %} today-card{% endif %}"
+                >
 
                     <table>
 
@@ -95,37 +80,45 @@
                         </thead>
 
                         <tbody>
+
                             {% for entry in day.list %}
-                                <tr class= "
-                                    timetable-row
-                                    {% if day.grouper == today %} today-row {% endif %}
-                                    {% if entry.status %} status-{{ entry.status|lower}}{% endif %}"
-                                    data-search="{{entry.unit_code}} {{entry.unit}}"
-                                    data-day = "{{entry.day}}"
-                                    >
+
+                                <tr
+                                    class="timetable-row{% if day.grouper == today %} today-row{% endif %}"
+                                    data-search="{{ entry.unit_code }} {{ entry.unit }}"
+                                    data-day="{{ entry.day }}"
+                                >
+
                                     <td class="time-cell">
+
                                         {% if entry.status %}
-                                            <span class="status-indicator {{entry.status}}"></span>
+                                            <span class="status-indicator {{ entry.status|lower }}"></span>
                                         {% endif %}
-                                        <span class = "time-text">
+
+                                        <span class="time-text">
                                             {{ entry.start_time }}
+                                            -
                                             {{ entry.end_time }}
                                         </span>
-                                        
+
                                         {% if entry.status %}
-                                            <div class="class-status {{entry.status|lower}}">
+                                            <div class="class-status {{ entry.status|lower }}">
                                                 {{ entry.status }}
                                             </div>
                                         {% endif %}
+
                                     </td>
-                                    
+
                                     <td>
+
                                         <div class="unit-code">
                                             {{ entry.unit_code }}
                                         </div>
+
                                         <div class="unit-name">
-                                            {{entry.unit}}
+                                            {{ entry.unit }}
                                         </div>
+
                                     </td>
 
                                     <td>
@@ -134,43 +127,78 @@
 
                                     <td>
 
-                                        {% if entry.mode == "Physical"%}
+                                        {% if entry.mode == "Physical" %}
+
                                             <span class="mode physical">
                                                 Physical
                                             </span>
+
                                         {% else %}
+
                                             <span class="mode online">
                                                 Online
                                             </span>
+
                                         {% endif %}
+
                                     </td>
 
                                     <td>
 
-                                        {% if entry.mode == "Physical"%}
+                                        {% if entry.mode == "Physical" %}
+
                                             {{ entry.room }}
+
                                         {% else %}
-                                            {% if entry.omline_link %}
-                                                <a href="{{entry.online_link}}" target="_blank" class="join-button">
+
+                                            {% if entry.online_link %}
+
+                                                <a
+                                                    href="{{ entry.online_link }}"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    class="join-button"
+                                                >
                                                     Join Class
                                                 </a>
+
                                             {% else %}
+
                                                 Online class
+
                                             {% endif %}
+
                                         {% endif %}
+
                                     </td>
+
                                 </tr>
+
                             {% endfor %}
+
                         </tbody>
+
                     </table>
+
                 </div>
+
             </div>
+
         {% empty %}
-            <div class="empty.message">
+
+            <div class="empty-message">
+
                 <h3>No classes scheduled</h3>
+
                 <p>Your timetable is currently empty.</p>
+
             </div>
+
         {% endfor %}
+
     </div>
+
+    <script src="{% static 'js/navigation.js' %}"></script>
+
 </body>
 </html>

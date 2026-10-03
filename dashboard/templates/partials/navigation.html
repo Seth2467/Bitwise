@@ -1,0 +1,46 @@
+<nav class="topbar">
+
+    <div class="topbar-left">
+
+        <button class="menu-button" id="menuButton" type="button" aria-label="Open navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <a href="{% url 'dashboard' %}" class="portal-name">
+            Student Portal
+        </a>
+
+    </div>
+
+    <div class="navigation-menu" id="navigationMenu">
+
+        <a href="{% url 'dashboard' %}"
+           class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'timetable' %}"
+           class="{% if request.resolver_match.url_name == 'timetable' %}active{% endif %}">
+            Timetable
+        </a>
+
+        <a href="{% url 'exam_timetable' %}"
+           class="{% if request.resolver_match.url_name == 'exam_timetable' %}active{% endif %}">
+            Exam Timetable
+        </a>
+
+        <a href="{% url 'resource_list' %}"
+           class="{% if request.resolver_match.url_name == 'resource_list' %}active{% endif %}">
+            Study Resources
+        </a>
+
+        <a href="{% url 'exam_history' %}"
+            class="{% if request.resolver_match.url_name == 'exam_history' %}active{% endif %}">
+            Exam History
+        </a>
+
+    </div>
+
+</nav>

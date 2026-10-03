@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('dashboard.urls')),
     path( 'timetable/', timetable_views.timetable, name= 'timetable'),
-    path( 'exams/', exam_views.exam_timetable, name = 'exam_timetable'),
+    path('exams/', include('exams.urls')),
     path( 'resources/', include('resources.urls')),
 ]
 

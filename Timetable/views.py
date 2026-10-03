@@ -16,17 +16,29 @@ def timetable(request):
         'Friday':5,
     }
     entries = TimetableEntry.objects.all()
-
     for entry in entries:
-        if entry.bounced:
-            entry.status = 'Bounced'
-        
-        elif entry.day != today:
+
+        if entry.day != today:
             entry.status = ''
+
+        elif current_time >= entry.end_time:
+
+            elapsed_seconds = (
+                datetime.combine(datetime.today(), current_time)
+                - datetime.combine(datetime.today(), entry.end_time)
+            ).total_seconds()
+
+            if elapsed_seconds <= 3600:
+                entry.status = 'Finished'
+            else:
+                entry.status = ''
+
+        elif entry.bounced:
+            entry.status = 'Bounced'
+
         elif current_time < entry.start_time:
             entry.status = 'Upcoming'
-        elif current_time >= entry.end_time:
-            entry.status = 'Finished'
+
         else:
             entry.status = 'Ongoing'
     entries = sorted(

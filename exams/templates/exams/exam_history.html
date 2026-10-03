@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Exam Timetable</title>
+    <title>Exam History</title>
 
     <link rel="stylesheet" href="{% static 'exams/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
@@ -24,54 +24,20 @@
         <div class="header">
 
             <h1>
-                Exam Timetable
+                Exam History
             </h1>
 
             <p>
-                Electrical and Electronic Engineering
+                Completed Exams and CATs
             </p>
 
         </div>
 
-        <div class="exam-controls">
+        <div class="history-intro">
 
-            <div class="exam-search">
-
-                <input
-                    type="text"
-                    id="examSearch"
-                    placeholder="Search by unit code or unit name..."
-                >
-
-            </div>
-
-            <div class="exam-filters">
-
-                <label for="examTypeFilter">
-                    Show:
-                </label>
-
-                <select id="examTypeFilter">
-
-                    <option value="all">
-                        All exams
-                    </option>
-
-                    <option value="main">
-                        Main exams
-                    </option>
-
-                    <option value="cat">
-                        CATs
-                    </option>
-
-                    <option value="takeaway">
-                        Take-away CATs
-                    </option>
-
-                </select>
-
-            </div>
+            <p>
+                Exams and CATs that have already been completed.
+            </p>
 
         </div>
 
@@ -102,26 +68,13 @@
 
                             </div>
 
-                            {% if day.grouper == today %}
-
-                                <span class="today-label">
-                                    TODAY
-                                </span>
-
-                            {% endif %}
-
                         </div>
 
                         <div class="exam-day-card">
 
                             {% for exam in day.list %}
 
-                                <div
-                                    class="exam-row"
-                                    data-search="{{ exam.unit.code|lower }} {{ exam.unit.name|lower }}"
-                                    data-exam-type="{{ exam.exam_type|lower }}"
-                                    data-mode="{{ exam.mode|lower }}"
-                                >
+                                <div class="exam-row">
 
                                     <div class="exam-main">
 
@@ -159,13 +112,9 @@
 
                                             {% endif %}
 
-                                            {% if exam.is_cancelled %}
-
-                                                <span class="exam-badge cancelled">
-                                                    Cancelled
-                                                </span>
-
-                                            {% endif %}
+                                            <span class="exam-badge completed">
+                                                Completed
+                                            </span>
 
                                         </div>
 
@@ -247,27 +196,6 @@
 
                                         {% endif %}
 
-                                        {% if exam.mode == "Online" and exam.online_link %}
-
-                                            <div class="exam-detail">
-
-                                                <span class="detail-label">
-                                                    Access
-                                                </span>
-
-                                                <a
-                                                    href="{{ exam.online_link }}"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    class="join-button"
-                                                >
-                                                    Join Online
-                                                </a>
-
-                                            </div>
-
-                                        {% endif %}
-
                                     </div>
 
                                     {% if exam.notes %}
@@ -275,7 +203,7 @@
                                         <div class="exam-notes">
 
                                             <span class="notes-label">
-                                                Reminder
+                                                Notes
                                             </span>
 
                                             <span class="notes-text">
@@ -298,32 +226,16 @@
 
             </div>
 
-            <div
-                id="noSearchResults"
-                class="empty-message"
-                style="display: none;"
-            >
-
-                <h2>
-                    No matching exams
-                </h2>
-
-                <p>
-                    Try a different search or filter.
-                </p>
-
-            </div>
-
         {% else %}
 
             <div class="empty-message">
 
                 <h2>
-                    No upcoming exams
+                    No Completed Exams
                 </h2>
 
                 <p>
-                    There are currently no upcoming exams or CATs on your timetable.
+                    Your completed exams and CATs will appear here.
                 </p>
 
             </div>
@@ -333,109 +245,6 @@
     </div>
 
     <script src="{% static 'js/navigation.js' %}"></script>
-
-    <script>
-
-        const searchInput = document.getElementById("examSearch");
-        const typeFilter = document.getElementById("examTypeFilter");
-        const examSections = document.querySelectorAll(".exam-day-section");
-        const noSearchResults = document.getElementById("noSearchResults");
-
-        function filterExams() {
-
-            const searchText =
-                searchInput.value.toLowerCase().trim();
-
-            const selectedType =
-                typeFilter.value;
-
-            let visibleRows = 0;
-
-            examSections.forEach(function (section) {
-
-                const rows =
-                    section.querySelectorAll(".exam-row");
-
-                let sectionHasVisibleRows = false;
-
-                rows.forEach(function (row) {
-
-                    const searchableText =
-                        row.dataset.search;
-
-                    const examType =
-                        row.dataset.examType;
-
-                    const examMode =
-                        row.dataset.mode;
-
-                    const matchesSearch =
-                        searchableText.includes(searchText);
-
-                    let matchesType = true;
-
-                    if (selectedType === "main") {
-
-                        matchesType =
-                            examType === "main";
-
-                    } else if (selectedType === "cat") {
-
-                        matchesType =
-                            examType === "cat" &&
-                            examMode !== "take-away";
-
-                    } else if (selectedType === "takeaway") {
-
-                        matchesType =
-                            examMode === "take-away";
-
-                    }
-
-                    const visible =
-                        matchesSearch && matchesType;
-
-                    row.style.display =
-                        visible ? "" : "none";
-
-                    if (visible) {
-
-                        sectionHasVisibleRows = true;
-                        visibleRows++;
-
-                    }
-
-                });
-
-                section.style.display =
-                    sectionHasVisibleRows ? "" : "none";
-
-            });
-
-            if (noSearchResults) {
-
-                noSearchResults.style.display =
-                    visibleRows === 0 ? "" : "none";
-
-            }
-
-        }
-
-        if (searchInput && typeFilter) {
-
-            searchInput.addEventListener(
-                "input",
-                filterExams
-            );
-
-            typeFilter.addEventListener(
-                "change",
-                filterExams
-            );
-
-        }
-
-    </script>
 
 </body>
 
