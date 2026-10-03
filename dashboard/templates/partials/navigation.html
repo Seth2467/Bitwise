@@ -31,8 +31,10 @@
             Exam Timetable
         </a>
 
-        <a href="{% url 'resource_list' %}"
-           class="{% if request.resolver_match.url_name == 'resource_list' %}active{% endif %}">
+        <a
+            href="{% url 'resource_list' %}"
+            class="{% if request.resolver_match.url_name == 'resource_list' or request.resolver_match.url_name == 'unit_resource_categories' or request.resolver_match.url_name == 'resource_list_by_category' %}active{% endif %}"
+        >
             Study Resources
         </a>
 

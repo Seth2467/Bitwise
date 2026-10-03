@@ -3,67 +3,53 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
-    <meta Charset="UTF-8">
+
+    <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Study Resources</title>
 
     <link rel="stylesheet" href="{% static 'css/unit_list.css' %}">
-    <link rel="stylesheet"
-      href="{% static 'css/navigation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
 
 </head>
 
 <body>
-    <nav class="navbar">
 
-    <a href="{% url 'dashboard' %}" class="nav-brand">
-        Student Portal
-    </a>
+    {% include 'partials/navigation.html' %}
 
-    <div class="nav-links">
-
-        <a href="{% url 'dashboard' %}">
-            Dashboard
-        </a>
-
-        <a href="{% url 'timetable' %}">
-            Timetable
-        </a>
-
-        <a href="{% url 'exam_timetable' %}">
-            Exam Timetable
-        </a>
-
-        <a href="{% url 'resource_list' %}" class="active">
-            Study Resources
-        </a>
-
-    </div>
-
-</nav>
-    
     <div class="container">
 
         <h1>Study Resources</h1>
 
-        <p class="subtitle">Electrical and Electronic Engineering</p>
+        <p class="subtitle">
+            Electrical and Electronic Engineering
+        </p>
 
         <input
             type="text"
             id="unitSearch"
             class="search-box"
-            placeholder="search by unit code or unit name..."
-            aria-label="Search units" 
-        
+            placeholder="Search by unit code or unit name..."
+            aria-label="Search units"
         >
+
         <div class="unit-grid" id="unitGrid">
 
             {% for unit in units %}
-                <a href="{% url 'unit_resource_categories' unit.id %}" class="unit-card">
+
+                <a
+                    href="{% url 'unit_resource_categories' unit.id %}"
+                    class="unit-card"
+                >
+
                     <div class="unit-code">
                         {{ unit.code }}
                     </div>
+
                     <div class="unit-name">
                         {{ unit.name }}
                     </div>
@@ -71,17 +57,24 @@
                     <span class="view-link">
                         View resources &rarr;
                     </span>
+
                 </a>
+
             {% empty %}
+
                 <p class="empty-message">
                     Units not available yet!
                 </p>
+
             {% endfor %}
 
         </div>
+
     </div>
 
     <script src="{% static 'js/unit_list.js' %}"></script>
+    <script src="{% static 'js/navigation.js' %}"></script>
+
 </body>
-</html>
+
 </html>

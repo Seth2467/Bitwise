@@ -2,32 +2,89 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{{ unit.code }} - {{ category }}</title>
 
-    <link rel="stylesheet"
-          href="{% static 'css/resource_list_by_category.css' %}">
+    <link rel="stylesheet" href="{% static 'css/resource_list_by_category.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
+
 </head>
 
 <body>
 
+    {% include 'partials/navigation.html' %}
+
     <div class="container">
 
-        <a href="{% url 'unit_resource_categories' unit.id %}"
-           class="back-link">
-            ← Back to Categories
-        </a>
+        <div class="resource-header">
 
-        <h1>{{ unit.code }}</h1>
+            <div class="resource-breadcrumb">
 
-        <p class="subtitle">
-            {{ unit.name }}
-        </p>
+                <a href="{% url 'resource_list' %}">
+                    Study Resources
+                </a>
 
-        <h2>{{ category }}</h2>
+                <span> / </span>
+
+                <a href="{% url 'unit_resource_categories' unit.id %}">
+                    {{ unit.code }}
+                </a>
+
+                <span> / </span>
+
+                <span>{{ category }}</span>
+
+            </div>
+
+            <h1>{{ unit.code }}</h1>
+
+            <p class="subtitle">
+                {{ unit.name }}
+            </p>
+
+        </div>
+
+        <div class="resource-navigation">
+
+            <a
+                href="{% url 'resource_list' %}"
+                class="resource-nav-link"
+            >
+                All Units
+            </a>
+
+            <span>/</span>
+
+            <a
+                href="{% url 'unit_resource_categories' unit.id %}"
+                class="resource-nav-link"
+            >
+                {{ unit.code }}
+            </a>
+
+            <span>/</span>
+
+            <span class="resource-nav-current">
+                {{ category }}
+            </span>
+
+        </div>
+
+        <div class="category-header">
+
+            <h2>{{ category }}</h2>
+
+            <p>
+                Study materials available for {{ unit.code }}.
+            </p>
+
+        </div>
 
         <div class="resource-list">
 
@@ -37,20 +94,46 @@
 
                     <div class="resource-info">
 
-                        <h3>{{ resource.title }}</h3>
+                        <h3>
+                            {{ resource.title }}
+                        </h3>
 
                         {% if resource.description %}
-                            <p>{{ resource.description }}</p>
+
+                            <p>
+                                {{ resource.description }}
+                            </p>
+
                         {% endif %}
 
                     </div>
 
                     {% if resource.file %}
-                        <a href="{{ resource.file.url }}"
-                           class="download-link"
-                           target="_blank">
-                            Open PDF →
-                        </a>
+
+                        <div class="resource-actions">
+
+                            <span class="file-type">
+                                {{ resource.file_type }}
+                            </span>
+
+                            <a
+                                href="{{ resource.file.url }}"
+                                class="open-button"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Open
+                            </a>
+
+                            <a
+                                href="{{ resource.file.url }}"
+                                class="download-button"
+                            >
+                                Download
+                            </a>
+
+                        </div>
+
                     {% endif %}
 
                 </div>
@@ -58,7 +141,13 @@
             {% empty %}
 
                 <div class="empty-message">
-                    No resources are available in this category yet.
+
+                    <h3>No resources available</h3>
+
+                    <p>
+                        There are no resources available in this category yet.
+                    </p>
+
                 </div>
 
             {% endfor %}
@@ -67,5 +156,8 @@
 
     </div>
 
+    <script src="{% static 'js/navigation.js' %}"></script>
+
 </body>
+
 </html>

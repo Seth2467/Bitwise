@@ -6,137 +6,171 @@ body {
     margin: 0;
     padding: 45px 25px;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f6f8;
-    color: #263238;
+    background: #f5f7fa;
+    color: #1f2937;
 }
 
 .container {
     width: 100%;
-    max-width: 1150px;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 30px 20px;
 }
 
-.back-link {
-    display: inline-block;
+.resource-header {
+    margin-bottom: 25px;
+}
+
+.resource-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.resource-breadcrumb a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.resource-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.resource-header h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.subtitle {
+    margin: 8px 0 0;
+    font-size: 15px;
+    color: #64748b;
+}
+
+.resource-navigation {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin-bottom: 30px;
+    padding: 10px 14px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.resource-nav-link {
     color: #2563eb;
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
-    transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.back-link:hover {
-    color: #1d4ed8;
-    transform: translateX(-3px);
+.resource-nav-link:hover {
+    text-decoration: underline;
 }
 
-h1 {
-    margin: 0;
-    font-size: 34px;
-    font-weight: 700;
-    color: #263238;
-}
-
-.subtitle {
-    margin: 8px 0 40px;
+.resource-nav-current {
+    font-size: 14px;
     color: #64748b;
-    font-size: 16px;
 }
 
-h2 {
-    margin: 0 0 22px;
+.category-header {
+    margin-bottom: 20px;
+}
+
+.category-header h2 {
+    margin: 0;
     font-size: 21px;
-    color: #263238;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.category-header p {
+    margin: 7px 0 0;
+    font-size: 14px;
+    color: #64748b;
 }
 
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
 }
 
 .category-card {
-    position: relative;
     display: block;
-    min-height: 150px;
-    padding: 25px;
-    background-color: #ffffff;
-    border: 1px solid #e1e5ea;
-    border-radius: 9px;
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
     text-decoration: none;
-    color: inherit;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.035);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.category-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #2563eb;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.25s ease;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .category-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.category-card:hover::before {
-    transform: scaleX(1);
+    border-color: #bfdbfe;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+    transform: translateY(-2px);
 }
 
 .category-card h3 {
-    margin: 0 0 12px;
-    font-size: 18px;
+    margin: 0;
+    font-size: 17px;
     font-weight: 700;
-    color: #263238;
+    color: #2563eb;
 }
 
 .category-card p {
-    margin: 0;
-    color: #52667a;
-    line-height: 1.5;
+    margin: 8px 0 0;
     font-size: 14px;
+    line-height: 1.5;
+    color: #64748b;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
     body {
-        padding: 30px 16px;
+        padding: 45px 15px;
     }
 
-    h1 {
-        font-size: 28px;
+    .container {
+        padding: 24px 10px;
     }
 
-    .subtitle {
-        margin-bottom: 30px;
+    .resource-header h1 {
+        font-size: 26px;
+    }
+
+    .category-grid {
+        gap: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px 5px;
     }
 
     .category-grid {
         grid-template-columns: 1fr;
-        gap: 15px;
     }
 
     .category-card {
-        min-height: 140px;
-        padding: 22px;
-    }
-}
-
-@media (max-width: 400px) {
-    body {
-        padding: 25px 12px;
+        padding: 18px;
     }
 
-    h1 {
-        font-size: 25px;
+    .category-card h3 {
+        font-size: 16px;
     }
 }

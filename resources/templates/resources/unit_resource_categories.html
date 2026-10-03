@@ -2,79 +2,139 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{{ unit.code }} - Study Resources</title>
 
-    <link rel="stylesheet"
-          href="{% static 'css/unit_resource_categories.css' %}">
+    <link rel="stylesheet" href="{% static 'css/unit_resource_categories.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
+
 </head>
 
 <body>
 
+    {% include 'partials/navigation.html' %}
+
     <div class="container">
 
-        <a href="{% url 'resource_list' %}" class="back-link">
-            ← Back to Units
-        </a>
+        <div class="resource-header">
 
-        <h1>{{ unit.code }}</h1>
+            <div class="resource-breadcrumb">
 
-        <p class="subtitle">
-            {{ unit.name }}
-        </p>
+                <a href="{% url 'resource_list' %}">
+                    Study Resources
+                </a>
 
-        <h2>Choose a Resource Category</h2>
+                <span> / </span>
+
+                <span>{{ unit.code }}</span>
+
+            </div>
+
+            <h1>{{ unit.code }}</h1>
+
+            <p class="subtitle">
+                {{ unit.name }}
+            </p>
+
+        </div>
+
+        <div class="resource-navigation">
+
+            <a
+                href="{% url 'resource_list' %}"
+                class="resource-nav-link"
+            >
+                All Units
+            </a>
+
+            <span class="resource-nav-current">
+                {{ unit.code }}
+            </span>
+
+        </div>
+
+        <div class="category-header">
+
+            <h2>
+                Resource Categories
+            </h2>
+
+            <p>
+                Choose a category to find study materials for this unit.
+            </p>
+
+        </div>
 
         <div class="category-grid">
 
-    <a href="{% url 'resource_list_by_category' unit.id 'lecture_notes' %}"
-       class="category-card">
-        <h3>Lecture Notes</h3>
-        <p>Course notes and learning materials.</p>
-    </a>
+            <a
+                href="{% url 'resource_list_by_category' unit.id 'lecture_notes' %}"
+                class="category-card"
+            >
+                <h3>Lecture Notes</h3>
+                <p>Course notes and learning materials.</p>
+            </a>
 
-    <a href="{% url 'resource_list_by_category' unit.id 'past_paper' %}"
-       class="category-card">
-        <h3>Past Papers</h3>
-        <p>Previous examination papers.</p>
-    </a>
+            <a
+                href="{% url 'resource_list_by_category' unit.id 'past_paper' %}"
+                class="category-card"
+            >
+                <h3>Past Papers</h3>
+                <p>Previous examination papers.</p>
+            </a>
 
-    <a href="{% url 'resource_list_by_category' unit.id 'past_cat' %}"
-       class="category-card">
-        <h3>CATs</h3>
-        <p>Previous continuous assessment tests.</p>
-    </a>
+            <a
+                href="{% url 'resource_list_by_category' unit.id 'past_cat' %}"
+                class="category-card"
+            >
+                <h3>CATs</h3>
+                <p>Previous continuous assessment tests.</p>
+            </a>
 
-    <a href="{% url 'resource_list_by_category' unit.id 'reference' %}"
-       class="category-card">
-        <h3>Reference Materials</h3>
-        <p>Books, articles and other references.</p>
-    </a>
+            <a
+                href="{% url 'resource_list_by_category' unit.id 'reference' %}"
+                class="category-card"
+            >
+                <h3>Reference Materials</h3>
+                <p>Books, articles and other references.</p>
+            </a>
 
-    <a href="{% url 'resource_list_by_category' unit.id 'lab_material' %}"
-       class="category-card">
-        <h3>Laboratory Materials</h3>
-        <p>Laboratory manuals and materials.</p>
-    </a>
+            <a
+                href="{% url 'resource_list_by_category' unit.id 'lab_material' %}"
+                class="category-card"
+            >
+                <h3>Laboratory Materials</h3>
+                <p>Laboratory manuals and materials.</p>
+            </a>
 
-    <a href="{% url 'resource_list_by_category' unit.id 'solution' %}"
-       class="category-card">
-        <h3>Solutions</h3>
-        <p>Solutions and marking schemes.</p>
-    </a>
+            <a
+                href="{% url 'resource_list_by_category' unit.id 'solution' %}"
+                class="category-card"
+            >
+                <h3>Solutions</h3>
+                <p>Solutions and marking schemes.</p>
+            </a>
 
-    <a href="{% url 'resource_list_by_category' unit.id 'other' %}"
-       class="category-card">
-        <h3>Other</h3>
-        <p>Other useful learning resources.</p>
-    </a>
+            <a
+                href="{% url 'resource_list_by_category' unit.id 'other' %}"
+                class="category-card"
+            >
+                <h3>Other</h3>
+                <p>Other useful learning resources.</p>
+            </a>
 
-</div>
+        </div>
 
     </div>
 
+    <script src="{% static 'js/navigation.js' %}"></script>
+
 </body>
+
 </html>
