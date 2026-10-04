@@ -1,181 +1,723 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard</title>
+    <title>Engineering Workbench</title>
 
-    <link rel="stylesheet"
-          href="{% static 'css/dashboard.css' %}">
-    <link rel="stylesheet"
-      href="{% static 'css/navigation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
 </head>
 
 <body>
+
     {% include 'partials/navigation.html' %}
-    <div class="container">
 
-        <header class="dashboard-header">
+    <main
+        class="workbench"
+        id="workbench"
+        {% if ongoing_class %}
+            data-theme-source="{{ ongoing_class.unit|lower }}"
+        {% elif next_class %}
+            data-theme-source="{{ next_class.unit|lower }}"
+        {% else %}
+            data-theme-source="general"
+        {% endif %}
+        data-has-ongoing="{% if ongoing_class %}true{% else %}false{% endif %}"
+        data-has-next="{% if next_class %}true{% else %}false{% endif %}"
+        data-has-exam="{% if next_exam %}true{% else %}false{% endif %}"
+        data-is-weekend="{% if is_weekend %}true{% else %}false{% endif %}"
+    >
 
-            <p class="greeting">
-                {{ greeting }}
-            </p>
+        <section class="workbench-hero">
 
-            <h1>Your Dashboard</h1>
+            <div class="hero-grid" aria-hidden="true"></div>
 
-            <p class="date">
-                {{ today|date:"l, F j, Y" }}
-            </p>
+            <div class="hero-content">
 
-        </header>
+                <p class="hero-eyebrow" id="heroEyebrow">
+                    ENGINEERING WORKBENCH
+                </p>
 
+                <p class="hero-greeting" id="heroGreeting">
+                    {{ greeting }}
+                </p>
 
-        <section class="dashboard-grid">
+                <h1 id="heroMessage">
+                    Your engineering workspace is active.
+                </h1>
 
-            <div class="dashboard-card">
+                <p class="hero-support" id="heroSupport">
+                    Keep the theory clear. Keep the problem in sight. Build with purpose.
+                </p>
 
-                <div class="card-header">
-                    <span class="card-label">Current Class</span>
+                <div class="hero-meta">
+                    <span>{{ today|date:"l, F j, Y" }}</span>
+                    <span class="meta-divider">•</span>
+                    <span id="workspaceStatus">WORKSPACE ACTIVE</span>
                 </div>
-
-                {% if ongoing_class %}
-
-                    <span class="unit-code">
-                        {{ ongoing_class.unit_code }}
-                    </span>
-
-                    <h2>{{ ongoing_class.unit }}</h2>
-
-                    <p class="class-time">
-                        {{ ongoing_class.start_time }}
-                        -
-                        {{ ongoing_class.end_time }}
-                    </p>
-
-                    <p class="class-detail">
-                        {{ ongoing_class.lecturer }}
-                    </p>
-
-                    <span class="status">
-                        Ongoing
-                    </span>
-
-                {% else %}
-
-                    <h2>No class right now</h2>
-
-                    <p class="class-detail">
-                        You are currently free.
-                    </p>
-
-                {% endif %}
 
             </div>
 
+            <div class="hero-visual" aria-hidden="true">
+                <div class="technical-frame">
+                    <div class="technical-line line-one"></div>
+                    <div class="technical-line line-two"></div>
+                    <div class="technical-line line-three"></div>
 
-            <div class="dashboard-card">
+                    <div class="technical-node node-one"></div>
+                    <div class="technical-node node-two"></div>
+                    <div class="technical-node node-three"></div>
 
-                <div class="card-header">
-                    <span class="card-label">Next Class</span>
+                    <div class="technical-circle"></div>
+
+                    <div class="technical-label label-one">SYS</div>
+                    <div class="technical-label label-two">01</div>
                 </div>
-
-                {% if next_class %}
-
-                    <span class="unit-code">
-                        {{ next_class.unit_code }}
-                    </span>
-
-                    <h2>{{ next_class.unit }}</h2>
-
-                    <p class="class-time">
-                        {{ next_class.start_time }}
-                        -
-                        {{ next_class.end_time }}
-                    </p>
-
-                    <p class="class-detail">
-                        {{ next_class.lecturer }}
-                    </p>
-
-                {% else %}
-
-                    <h2>No more classes</h2>
-
-                    <p class="class-detail">
-                        You have no more classes today.
-                    </p>
-
-                {% endif %}
-
-            </div>
-
-
-            <div class="dashboard-card exam-card">
-
-                <div class="card-header">
-                    <span class="card-label">Next Exam</span>
-                </div>
-
-                {% if next_exam %}
-
-                    <span class="unit-code">
-                        {{ next_exam.unit.code }}
-                    </span>
-
-                    <h2>{{ next_exam.unit.name }}</h2>
-
-                    <p class="exam-type">
-                        {{ next_exam.exam_type }}
-                    </p>
-
-                    <strong class="exam-countdown">
-                        {{ exam_label }}
-                    </strong>
-
-                {% else %}
-
-                    <h2>No upcoming exams</h2>
-
-                    <p class="class-detail">
-                        You are all clear for now.
-                    </p>
-
-                {% endif %}
-
             </div>
 
         </section>
 
 
-        <section class="quick-access">
+        {% if ongoing_class or next_class or next_exam or engineering_contents %}
 
-            <h2>Quick Access</h2>
+            <section class="brief-section">
 
-            <div class="quick-grid">
+                <div class="section-heading">
 
-                <a href="{% url 'timetable' %}" class="quick-card">
-                    <span>Timetable</span>
-                    <span>→</span>
+                    <div>
+                        <p class="section-kicker">ENGINEERING BRIEF</p>
+                        <h2>What is on the bench</h2>
+                    </div>
+
+                    <span class="section-index">01</span>
+
+                </div>
+
+
+                <div class="brief-grid">
+
+                    {% if ongoing_class %}
+
+                        <article class="brief-card brief-card-live">
+
+                            <div class="brief-card-top">
+                                <span class="brief-label">IN SESSION</span>
+                                <span class="brief-indicator"></span>
+                            </div>
+
+                            <span class="unit-code">
+                                {{ ongoing_class.unit_code }}
+                            </span>
+
+                            <h3>
+                                {{ ongoing_class.unit }}
+                            </h3>
+
+                            <p class="brief-time">
+                                {{ ongoing_class.start_time }} – {{ ongoing_class.end_time }}
+                            </p>
+
+                            <p class="brief-detail">
+                                {{ ongoing_class.lecturer }}
+                            </p>
+
+                            {% if ongoing_class.mode %}
+                                <span class="brief-mode">
+                                    {{ ongoing_class.mode }}
+                                </span>
+                            {% endif %}
+
+                        </article>
+
+                    {% endif %}
+
+
+                    {% if next_class %}
+
+                        <article class="brief-card">
+
+                            <div class="brief-card-top">
+                                <span class="brief-label">NEXT ON THE BENCH</span>
+                            </div>
+
+                            <span class="unit-code">
+                                {{ next_class.unit_code }}
+                            </span>
+
+                            <h3>
+                                {{ next_class.unit }}
+                            </h3>
+
+                            <p class="brief-time">
+                                {{ next_class.start_time }} – {{ next_class.end_time }}
+                            </p>
+
+                            <p class="brief-detail">
+                                {{ next_class.lecturer }}
+                            </p>
+
+                            {% if next_class.mode %}
+                                <span class="brief-mode">
+                                    {{ next_class.mode }}
+                                </span>
+                            {% endif %}
+
+                        </article>
+
+                    {% endif %}
+
+
+                    {% if next_exam %}
+
+                        <article class="brief-card brief-card-assessment">
+
+                            <div class="brief-card-top">
+                                <span class="brief-label">ASSESSMENT AHEAD</span>
+                            </div>
+
+                            <span class="unit-code">
+                                {{ next_exam.unit.code }}
+                            </span>
+
+                            <h3>
+                                {{ next_exam.unit.name }}
+                            </h3>
+
+                            <p class="exam-type">
+                                {{ next_exam.exam_type }}
+                            </p>
+
+                            <strong class="exam-countdown">
+                                {{ exam_label }}
+                            </strong>
+
+                        </article>
+
+                    {% endif %}
+
+
+                    {% if engineering_contents %}
+
+                        <article
+                            class="brief-card brief-card-did-you-know"
+                            id="engineeringContentCard"
+                        >
+
+                            <div class="brief-card-top">
+
+                                <span
+                                    class="brief-label"
+                                    id="engineeringContentCategory"
+                                >
+                                    {{ engineering_contents.0.get_category_display }}
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                class="did-you-know-content"
+                                id="engineeringContentItems"
+                            >
+
+                                {% for content in engineering_contents %}
+
+                                    <div
+                                        class="did-you-know-item"
+                                        data-category="{{ content.get_category_display|escape }}"
+                                        {% if not forloop.first %}hidden{% endif %}
+                                    >
+
+                                        <span class="unit-code">
+                                            {{ content.title }}
+                                        </span>
+
+                                        <p>
+                                            {{ content.content }}
+                                        </p>
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            {% if engineering_contents|length > 1 %}
+
+                                <span
+                                    class="did-you-know-index"
+                                    id="engineeringContentIndex"
+                                >
+                                    01 / {{ engineering_contents|length|stringformat:"02d" }}
+                                </span>
+
+                            {% endif %}
+
+                        </article>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+
+        {% else %}
+
+            <section class="open-workspace">
+
+                <div
+                    class="open-workspace-mark"
+                    aria-hidden="true"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div>
+
+                    <p class="section-kicker">
+                        OPEN WORKSPACE
+                    </p>
+
+                    <h2>
+                        THE BENCH IS OPEN
+                    </h2>
+
+                    <p>
+                        Nothing is scheduled for the moment.
+                        A little space can be useful.
+                    </p>
+
+                </div>
+
+            </section>
+
+        {% endif %}
+
+
+        <section class="shortcuts-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-kicker">
+                        ENGINEERING SHORTCUTS
+                    </p>
+
+                    <h2>
+                        Move directly to the work
+                    </h2>
+
+                </div>
+
+                <span class="section-index">
+                    02
+                </span>
+
+            </div>
+
+
+            <div class="shortcut-grid">
+
+                <a
+                    href="{% url 'timetable' %}"
+                    class="shortcut-card"
+                >
+
+                    <div>
+
+                        <span class="shortcut-label">
+                            SCHEDULE
+                        </span>
+
+                        <h3>
+                            Timetable
+                        </h3>
+
+                        <p>
+                            See today's classes and the week ahead.
+                        </p>
+
+                    </div>
+
+                    <span class="shortcut-arrow">
+                        →
+                    </span>
+
                 </a>
 
-                <a href="{% url 'exam_timetable' %}" class="quick-card">
-                    <span>Exam Timetable</span>
-                    <span>→</span>
+
+                <a
+                    href="{% url 'resource_list' %}"
+                    class="shortcut-card"
+                >
+
+                    <div>
+
+                        <span class="shortcut-label">
+                            TECHNICAL LIBRARY
+                        </span>
+
+                        <h3>
+                            Study Resources
+                        </h3>
+
+                        <p>
+                            Find notes, past papers and technical material.
+                        </p>
+
+                    </div>
+
+                    <span class="shortcut-arrow">
+                        →
+                    </span>
+
                 </a>
 
-                <a href="{% url 'resource_list' %}" class="quick-card">
-                    <span>Study Resources</span>
-                    <span>→</span>
+
+                <a
+                    href="{% url 'exam_timetable' %}"
+                    class="shortcut-card"
+                >
+
+                    <div>
+
+                        <span class="shortcut-label">
+                            ASSESSMENT
+                        </span>
+
+                        <h3>
+                            Exam Timetable
+                        </h3>
+
+                        <p>
+                            Check upcoming examinations and deadlines.
+                        </p>
+
+                    </div>
+
+                    <span class="shortcut-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'exam_history' %}"
+                    class="shortcut-card"
+                >
+
+                    <div>
+
+                        <span class="shortcut-label">
+                            ARCHIVE
+                        </span>
+
+                        <h3>
+                            Exam History
+                        </h3>
+
+                        <p>
+                            Review completed assessments.
+                        </p>
+
+                    </div>
+
+                    <span class="shortcut-arrow">
+                        →
+                    </span>
+
                 </a>
 
             </div>
 
         </section>
 
-    </div>
+    </main>
+
+
     <script src="{% static 'js/navigation.js' %}"></script>
+
+
+    <script>
+
+        const workbench = document.getElementById("workbench");
+
+        const heroGreeting = document.getElementById("heroGreeting");
+        const heroMessage = document.getElementById("heroMessage");
+        const heroSupport = document.getElementById("heroSupport");
+        const workspaceStatus = document.getElementById("workspaceStatus");
+
+
+        const engineeringContentItems = Array.from(
+            document.querySelectorAll(".did-you-know-item")
+        );
+
+        const engineeringContentCategory =
+            document.getElementById("engineeringContentCategory");
+
+        const engineeringContentIndex =
+            document.getElementById("engineeringContentIndex");
+
+
+        let engineeringContentPosition = 0;
+
+
+        function showEngineeringContent(index) {
+
+            if (engineeringContentItems.length === 0) {
+                return;
+            }
+
+            engineeringContentItems.forEach((item, itemIndex) => {
+
+                item.hidden = itemIndex !== index;
+
+            });
+
+
+            const activeItem =
+                engineeringContentItems[index];
+
+
+            if (engineeringContentCategory) {
+
+                engineeringContentCategory.textContent =
+                    activeItem.dataset.category ||
+                    "ENGINEERING CONTENT";
+
+            }
+
+
+            if (engineeringContentIndex) {
+
+                engineeringContentIndex.textContent =
+                    String(index + 1).padStart(2, "0") +
+                    " / " +
+                    String(
+                        engineeringContentItems.length
+                    ).padStart(2, "0");
+
+            }
+
+        }
+
+
+        function rotateEngineeringContent() {
+
+            if (engineeringContentItems.length <= 1) {
+                return;
+            }
+
+            engineeringContentPosition =
+                (engineeringContentPosition + 1) %
+                engineeringContentItems.length;
+
+            showEngineeringContent(
+                engineeringContentPosition
+            );
+
+            setTimeout(
+                rotateEngineeringContent,
+                40000
+            );
+
+        }
+
+
+        showEngineeringContent(0);
+
+
+        if (engineeringContentItems.length > 1) {
+
+            setTimeout(
+                rotateEngineeringContent,
+                40000
+            );
+
+        }
+
+
+        const hasOngoing =
+            workbench.dataset.hasOngoing === "true";
+
+        const hasNext =
+            workbench.dataset.hasNext === "true";
+
+        const hasExam =
+            workbench.dataset.hasExam === "true";
+
+        const isWeekend =
+            workbench.dataset.isWeekend === "true";
+
+
+        const hour = new Date().getHours();
+
+
+        let greetingMessages = [];
+
+
+        if (hour >= 5 && hour < 12) {
+
+            greetingMessages = [
+                "Morning, Engineer. Let’s make something useful.",
+                "A new day at the workbench.",
+                "Good morning. Time to turn theory into something real."
+            ];
+
+        } else if (hour >= 12 && hour < 17) {
+
+            greetingMessages = [
+                "Good afternoon, Engineer. What’s on the bench?",
+                "The day is moving. So should the work.",
+                "Keep the systems clear and the thinking sharper."
+            ];
+
+        } else if (hour >= 17 && hour < 21) {
+
+            greetingMessages = [
+                "Evening, Engineer. Time to refine the details.",
+                "The workbench is still open.",
+                "Good engineering rewards careful thinking."
+            ];
+
+        } else {
+
+            greetingMessages = [
+                "Still building? That’s an engineer’s mind.",
+                "The world is quiet. Good time to think deeply.",
+                "Some of the best ideas begin when everything gets quiet."
+            ];
+
+        }
+
+
+        if (isWeekend && hasExam) {
+
+            heroMessage.textContent =
+                "The weekend is open. Precision still matters.";
+
+            heroSupport.textContent =
+                "Use the space to prepare deliberately for the assessment ahead.";
+
+            workspaceStatus.textContent =
+                "WEEKEND • ASSESSMENT AHEAD";
+
+        } else if (isWeekend) {
+
+            heroMessage.textContent =
+                "The workbench is quieter this weekend.";
+
+            heroSupport.textContent =
+                "No classes today. Use the space to review, experiment, or build.";
+
+            workspaceStatus.textContent =
+                "WEEKEND • OPEN WORKSPACE";
+
+        } else if (hasOngoing) {
+
+            heroMessage.textContent =
+                "Something is already moving on the bench.";
+
+            heroSupport.textContent =
+                "Stay focused on the system in front of you.";
+
+            workspaceStatus.textContent =
+                "SYSTEM IN SESSION";
+
+        } else if (hasNext) {
+
+            heroMessage.textContent =
+                "The next system is waiting on the bench.";
+
+            heroSupport.textContent =
+                "Use the space before it starts to get one step ahead.";
+
+            workspaceStatus.textContent =
+                "NEXT SESSION AHEAD";
+
+        } else if (hasExam) {
+
+            heroMessage.textContent =
+                "Precision matters when assessment is ahead.";
+
+            heroSupport.textContent =
+                "Use the technical library and prepare deliberately.";
+
+            workspaceStatus.textContent =
+                "ASSESSMENT AHEAD";
+
+        } else {
+
+            heroMessage.textContent =
+                "The bench is open.";
+
+            heroSupport.textContent =
+                "An open schedule is still an opportunity to build something useful.";
+
+            workspaceStatus.textContent =
+                "OPEN WORKSPACE";
+
+        }
+
+
+        function chooseRandom(items) {
+
+            return items[
+                Math.floor(
+                    Math.random() * items.length
+                )
+            ];
+
+        }
+
+
+        function updateGreeting() {
+
+            heroGreeting.textContent =
+                chooseRandom(greetingMessages);
+
+        }
+
+
+        function rotateGreeting() {
+
+            updateGreeting();
+
+            const nextRotation =
+                300000 +
+                Math.floor(
+                    Math.random() * 120000
+                );
+
+            setTimeout(
+                rotateGreeting,
+                nextRotation
+            );
+
+        }
+
+
+        updateGreeting();
+
+
+        setTimeout(
+            rotateGreeting,
+            300000 +
+            Math.floor(
+                Math.random() * 120000
+            )
+        );
+
+    </script>
+
 </body>
 </html>

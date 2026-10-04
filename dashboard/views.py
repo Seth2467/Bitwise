@@ -1,7 +1,12 @@
-from datetime import datetime, date
+from datetime import datetime, timedelta
+
 from django.shortcuts import render
+from django.utils import timezone
+from django.db.models import Q
+
 from Timetable.models import TimetableEntry
 from exams.models import Exam
+from .models import EngineeringContent
 
 
 def dashboard(request):
@@ -9,6 +14,7 @@ def dashboard(request):
     today = now.date()
     today_name = now.strftime('%A')
     current_time = now.time()
+    is_weekend = today_name in ['Saturday', 'Sunday']
 
     if 5 <= now.hour < 12:
         greeting = "Good morning, Engineer"
@@ -18,6 +24,12 @@ def dashboard(request):
         greeting = "Good evening, Engineer"
     else:
         greeting = "Good night, Engineer"
+
+    engineering_contents = EngineeringContent.objects.filter(
+        is_active=True,
+        published_at__lte=timezone.now(),
+        expires_at__gt=timezone.now()
+    ).order_by('-published_at')
 
     today_classes = TimetableEntry.objects.filter(
         day=today_name,
@@ -33,12 +45,18 @@ def dashboard(request):
         elif class_entry.start_time > current_time and next_class is None:
             next_class = class_entry
 
+    exam_window_end = today + timedelta(days=2)
+
     upcoming_exams = Exam.objects.filter(
         is_cancelled=False
-    ).exclude(
-        exam_date__lt=today,
-        due_date__lt=today
-    ).order_by('exam_date', 'due_date', 'start_time')
+    ).filter(
+        Q(exam_date__range=(today, exam_window_end)) |
+        Q(due_date__range=(today, exam_window_end))
+    ).order_by(
+        'exam_date',
+        'due_date',
+        'start_time'
+    )
 
     next_exam = upcoming_exams.first()
 
@@ -55,8 +73,8 @@ def dashboard(request):
                 exam_label = "Today"
             elif exam_days == 1:
                 exam_label = "Tomorrow"
-            else:
-                exam_label = f"In {exam_days} days"
+            elif exam_days == 2:
+                exam_label = "In 2 days"
 
     context = {
         'greeting': greeting,
@@ -65,6 +83,12 @@ def dashboard(request):
         'next_class': next_class,
         'next_exam': next_exam,
         'exam_label': exam_label,
+        'is_weekend': is_weekend,
+        'engineering_contents': engineering_contents,
     }
 
-    return render(request, 'dashboard/dashboard.html', context)
+    return render(
+        request,
+        'dashboard/dashboard.html',
+        context
+    )

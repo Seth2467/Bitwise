@@ -9,7 +9,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ unit.code }} - Study Resources</title>
+    <title>{{ unit.code }} - Technical Library</title>
 
     <link rel="stylesheet" href="{% static 'css/unit_resource_categories.css' %}">
     <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
@@ -20,17 +20,21 @@
 
     {% include 'partials/navigation.html' %}
 
-    <div class="container">
+    <main class="container">
 
-        <div class="resource-header">
+        <header class="resource-header">
+
+            <div class="resource-eyebrow">
+                TECHNICAL LIBRARY
+            </div>
 
             <div class="resource-breadcrumb">
 
                 <a href="{% url 'resource_list' %}">
-                    Study Resources
+                    Technical Library
                 </a>
 
-                <span> / </span>
+                <span>/</span>
 
                 <span>{{ unit.code }}</span>
 
@@ -42,9 +46,9 @@
                 {{ unit.name }}
             </p>
 
-        </div>
+        </header>
 
-        <div class="resource-navigation">
+        <nav class="resource-navigation" aria-label="Library navigation">
 
             <a
                 href="{% url 'resource_list' %}"
@@ -57,81 +61,185 @@
                 {{ unit.code }}
             </span>
 
-        </div>
+        </nav>
 
-        <div class="category-header">
+        <section class="category-section">
 
-            <h2>
-                Resource Categories
-            </h2>
+            <div class="category-header">
 
-            <p>
-                Choose a category to find study materials for this unit.
-            </p>
+                <div>
 
-        </div>
+                    <div class="section-kicker">
+                        STUDY MATERIALS
+                    </div>
 
-        <div class="category-grid">
+                    <h2>
+                        Explore this unit
+                    </h2>
 
-            <a
-                href="{% url 'resource_list_by_category' unit.id 'lecture_notes' %}"
-                class="category-card"
-            >
-                <h3>Lecture Notes</h3>
-                <p>Course notes and learning materials.</p>
-            </a>
+                    <p>
+                        Choose a category to access notes, assessments,
+                        laboratory materials and other resources for this unit.
+                    </p>
 
-            <a
-                href="{% url 'resource_list_by_category' unit.id 'past_paper' %}"
-                class="category-card"
-            >
-                <h3>Past Papers</h3>
-                <p>Previous examination papers.</p>
-            </a>
+                </div>
 
-            <a
-                href="{% url 'resource_list_by_category' unit.id 'past_cat' %}"
-                class="category-card"
-            >
-                <h3>CATs</h3>
-                <p>Previous continuous assessment tests.</p>
-            </a>
+            </div>
 
-            <a
-                href="{% url 'resource_list_by_category' unit.id 'reference' %}"
-                class="category-card"
-            >
-                <h3>Reference Materials</h3>
-                <p>Books, articles and other references.</p>
-            </a>
+            <div class="category-grid">
 
-            <a
-                href="{% url 'resource_list_by_category' unit.id 'lab_material' %}"
-                class="category-card"
-            >
-                <h3>Laboratory Materials</h3>
-                <p>Laboratory manuals and materials.</p>
-            </a>
+                <a
+                    href="{% url 'resource_list_by_category' unit.id 'lecture_notes' %}"
+                    class="category-card"
+                >
+                    <span class="category-label">
+                        CORE MATERIAL
+                    </span>
 
-            <a
-                href="{% url 'resource_list_by_category' unit.id 'solution' %}"
-                class="category-card"
-            >
-                <h3>Solutions</h3>
-                <p>Solutions and marking schemes.</p>
-            </a>
+                    <h3>
+                        Lecture Notes
+                    </h3>
 
-            <a
-                href="{% url 'resource_list_by_category' unit.id 'other' %}"
-                class="category-card"
-            >
-                <h3>Other</h3>
-                <p>Other useful learning resources.</p>
-            </a>
+                    <p>
+                        Course notes and learning materials.
+                    </p>
 
-        </div>
+                    <span class="category-arrow">
+                        →
+                    </span>
+                </a>
 
-    </div>
+                <a
+                    href="{% url 'resource_list_by_category' unit.id 'past_paper' %}"
+                    class="category-card"
+                >
+                    <span class="category-label">
+                        ASSESSMENT
+                    </span>
+
+                    <h3>
+                        Past Papers
+                    </h3>
+
+                    <p>
+                        Previous examination papers for practice and revision.
+                    </p>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+                </a>
+
+                <a
+                    href="{% url 'resource_list_by_category' unit.id 'past_cat' %}"
+                    class="category-card"
+                >
+                    <span class="category-label">
+                        ASSESSMENT
+                    </span>
+
+                    <h3>
+                        CATs
+                    </h3>
+
+                    <p>
+                        Previous continuous assessment tests.
+                    </p>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+                </a>
+
+                <a
+                    href="{% url 'resource_list_by_category' unit.id 'reference' %}"
+                    class="category-card"
+                >
+                    <span class="category-label">
+                        REFERENCE
+                    </span>
+
+                    <h3>
+                        Reference Materials
+                    </h3>
+
+                    <p>
+                        Books, articles and supporting references.
+                    </p>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+                </a>
+
+                <a
+                    href="{% url 'resource_list_by_category' unit.id 'lab_material' %}"
+                    class="category-card"
+                >
+                    <span class="category-label">
+                        PRACTICAL
+                    </span>
+
+                    <h3>
+                        Laboratory Materials
+                    </h3>
+
+                    <p>
+                        Laboratory manuals and practical materials.
+                    </p>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+                </a>
+
+                <a
+                    href="{% url 'resource_list_by_category' unit.id 'solution' %}"
+                    class="category-card"
+                >
+                    <span class="category-label">
+                        REVISION
+                    </span>
+
+                    <h3>
+                        Solutions
+                    </h3>
+
+                    <p>
+                        Worked solutions and marking schemes.
+                    </p>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+                </a>
+
+                <a
+                    href="{% url 'resource_list_by_category' unit.id 'other' %}"
+                    class="category-card"
+                >
+                    <span class="category-label">
+                        ADDITIONAL
+                    </span>
+
+                    <h3>
+                        Other Resources
+                    </h3>
+
+                    <p>
+                        Additional materials that may support your studies.
+                    </p>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
 
     <script src="{% static 'js/navigation.js' %}"></script>
 

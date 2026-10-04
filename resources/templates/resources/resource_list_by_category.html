@@ -20,23 +20,27 @@
 
     {% include 'partials/navigation.html' %}
 
-    <div class="container">
+    <main class="container">
 
-        <div class="resource-header">
+        <header class="resource-header">
+
+            <div class="resource-eyebrow">
+                TECHNICAL LIBRARY
+            </div>
 
             <div class="resource-breadcrumb">
 
                 <a href="{% url 'resource_list' %}">
-                    Study Resources
+                    Technical Library
                 </a>
 
-                <span> / </span>
+                <span>/</span>
 
                 <a href="{% url 'unit_resource_categories' unit.id %}">
                     {{ unit.code }}
                 </a>
 
-                <span> / </span>
+                <span>/</span>
 
                 <span>{{ category }}</span>
 
@@ -48,9 +52,9 @@
                 {{ unit.name }}
             </p>
 
-        </div>
+        </header>
 
-        <div class="resource-navigation">
+        <nav class="resource-navigation" aria-label="Resource navigation">
 
             <a
                 href="{% url 'resource_list' %}"
@@ -74,25 +78,43 @@
                 {{ category }}
             </span>
 
-        </div>
+        </nav>
 
-        <div class="category-header">
+        <section class="category-header">
 
-            <h2>{{ category }}</h2>
+            <div>
 
-            <p>
-                Study materials available for {{ unit.code }}.
-            </p>
+                <p class="section-kicker">
+                    STUDY MATERIALS
+                </p>
 
-        </div>
+                <h2>
+                    {{ category }}
+                </h2>
 
-        <div class="resource-list">
+                <p>
+                    Materials available for {{ unit.code }}.
+                </p>
+
+            </div>
+
+        </section>
+
+        <section class="resource-list" aria-label="{{ category }} resources">
 
             {% for resource in resources %}
 
-                <div class="resource-card">
+                <article class="resource-card">
 
                     <div class="resource-info">
+
+                        <div class="resource-card-top">
+
+                            <span class="resource-label">
+                                {{ resource.file_type }}
+                            </span>
+
+                        </div>
 
                         <h3>
                             {{ resource.title }}
@@ -111,10 +133,6 @@
                     {% if resource.file %}
 
                         <div class="resource-actions">
-
-                            <span class="file-type">
-                                {{ resource.file_type }}
-                            </span>
 
                             <a
                                 href="{{ resource.file.url }}"
@@ -136,25 +154,31 @@
 
                     {% endif %}
 
-                </div>
+                </article>
 
             {% empty %}
 
-                <div class="empty-message">
+                <section class="empty-message">
 
-                    <h3>No resources available</h3>
+                    <div class="empty-eyebrow">
+                        TECHNICAL LIBRARY
+                    </div>
+
+                    <h3>
+                        No resources available
+                    </h3>
 
                     <p>
-                        There are no resources available in this category yet.
+                        There are no materials in this category yet.
                     </p>
 
-                </div>
+                </section>
 
             {% endfor %}
 
-        </div>
+        </section>
 
-    </div>
+    </main>
 
     <script src="{% static 'js/navigation.js' %}"></script>
 

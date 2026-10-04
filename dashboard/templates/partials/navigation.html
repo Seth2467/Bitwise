@@ -9,7 +9,7 @@
         </button>
 
         <a href="{% url 'dashboard' %}" class="portal-name">
-            Student Portal
+            Engineering Workbench
         </a>
 
     </div>
@@ -18,29 +18,27 @@
 
         <a href="{% url 'dashboard' %}"
            class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-            Dashboard
+            Workbench
         </a>
 
         <a href="{% url 'timetable' %}"
            class="{% if request.resolver_match.url_name == 'timetable' %}active{% endif %}">
-            Timetable
+            Schedule
         </a>
 
         <a href="{% url 'exam_timetable' %}"
            class="{% if request.resolver_match.url_name == 'exam_timetable' %}active{% endif %}">
-            Exam Timetable
+            Assessments
         </a>
 
-        <a
-            href="{% url 'resource_list' %}"
-            class="{% if request.resolver_match.url_name == 'resource_list' or request.resolver_match.url_name == 'unit_resource_categories' or request.resolver_match.url_name == 'resource_list_by_category' %}active{% endif %}"
-        >
-            Study Resources
+        <a href="{% url 'resource_list' %}"
+           class="{% if request.resolver_match.url_name == 'resource_list' or request.resolver_match.url_name == 'unit_resource_categories' or request.resolver_match.url_name == 'resource_list_by_category' %}active{% endif %}">
+            Technical Library
         </a>
 
         <a href="{% url 'exam_history' %}"
-            class="{% if request.resolver_match.url_name == 'exam_history' %}active{% endif %}">
-            Exam History
+           class="{% if request.resolver_match.url_name == 'exam_history' %}active{% endif %}">
+            Archive
         </a>
 
     </div>

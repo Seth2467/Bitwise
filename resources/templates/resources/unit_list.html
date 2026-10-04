@@ -1,16 +1,14 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Study Resources</title>
+    <title>Technical Library</title>
 
     <link rel="stylesheet" href="{% static 'css/unit_list.css' %}">
     <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
@@ -21,23 +19,50 @@
 
     {% include 'partials/navigation.html' %}
 
-    <div class="container">
+    <main class="container">
 
-        <h1>Study Resources</h1>
+        <header class="library-header">
 
-        <p class="subtitle">
-            Electrical and Electronic Engineering
-        </p>
+            <div class="header-eyebrow">
+                TECHNICAL LIBRARY
+            </div>
 
-        <input
-            type="text"
-            id="unitSearch"
-            class="search-box"
-            placeholder="Search by unit code or unit name..."
-            aria-label="Search units"
+            <h1>
+                Study Resources
+            </h1>
+
+            <p class="subtitle">
+                Electrical &amp; Electronic Engineering
+            </p>
+
+        </header>
+
+        <section class="library-controls">
+
+            <div class="search-wrapper">
+
+                <label for="unitSearch">
+                    Find a unit
+                </label>
+
+                <input
+                    type="text"
+                    id="unitSearch"
+                    class="search-box"
+                    placeholder="Search by unit code or unit name..."
+                    aria-label="Search units"
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </section>
+
+        <section
+            class="unit-grid"
+            id="unitGrid"
+            aria-label="Engineering units"
         >
-
-        <div class="unit-grid" id="unitGrid">
 
             {% for unit in units %}
 
@@ -46,8 +71,16 @@
                     class="unit-card"
                 >
 
-                    <div class="unit-code">
-                        {{ unit.code }}
+                    <div class="unit-card-top">
+
+                        <span class="unit-code">
+                            {{ unit.code }}
+                        </span>
+
+                        <span class="unit-arrow" aria-hidden="true">
+                            →
+                        </span>
+
                     </div>
 
                     <div class="unit-name">
@@ -55,22 +88,34 @@
                     </div>
 
                     <span class="view-link">
-                        View resources &rarr;
+                        Explore resources
                     </span>
 
                 </a>
 
             {% empty %}
 
-                <p class="empty-message">
-                    Units not available yet!
-                </p>
+                <div class="empty-message">
+
+                    <div class="empty-eyebrow">
+                        TECHNICAL LIBRARY
+                    </div>
+
+                    <h2>
+                        No units available
+                    </h2>
+
+                    <p>
+                        Study resources will appear here once units are added.
+                    </p>
+
+                </div>
 
             {% endfor %}
 
-        </div>
+        </section>
 
-    </div>
+    </main>
 
     <script src="{% static 'js/unit_list.js' %}"></script>
     <script src="{% static 'js/navigation.js' %}"></script>

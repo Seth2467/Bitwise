@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Class Timetable</title>
+    <title>Engineering Class Timetable</title>
 
     <link rel="stylesheet" href="{% static 'timetable/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
@@ -18,49 +18,65 @@
 
     {% include 'partials/navigation.html' %}
 
-    <div class="container">
+    <main class="container">
 
-        <div class="header">
-            <h1>Class Timetable</h1>
-            <p>Electrical and Electronic Engineering</p>
-        </div>
+        <header class="header">
+            <div class="header-eyebrow">SCHEDULE</div>
 
-        <div class="search-box">
-            <input
-                type="text"
-                id="timetableSearch"
-                placeholder="Search by unit code or unit name..."
-            >
-        </div>
+            <h1>Engineering Class Timetable</h1>
 
-        <div class="day-filter">
-            <label for="dayFilter">Show:</label>
+            <p>
+                Electrical &amp; Electronic Engineering
+            </p>
+        </header>
 
-            <select id="dayFilter">
-                <option value="All">All Days</option>
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <option value="Thursday">Thursday</option>
-                <option value="Friday">Friday</option>
-            </select>
-        </div>
+        <section class="schedule-controls">
+
+            <div class="search-box">
+                <label for="timetableSearch">Find a class</label>
+
+                <input
+                    type="text"
+                    id="timetableSearch"
+                    placeholder="Search by unit code or unit name..."
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="day-filter">
+                <label for="dayFilter">Show</label>
+
+                <select id="dayFilter">
+                    <option value="All">All days</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                </select>
+            </div>
+
+        </section>
 
         {% regroup entries by day as day_groups %}
 
         {% for day in day_groups %}
 
-            <div
+            <section
                 class="day-section"
                 data-section-day="{{ day.grouper }}"
             >
 
-                <div class="day-title">
-                    {{ day.grouper }}
+                <div class="day-heading">
 
-                    {% if day.grouper == today %}
-                        <span class="today-label">TODAY</span>
-                    {% endif %}
+                    <div>
+                        <h2>{{ day.grouper }}</h2>
+
+                        {% if day.grouper == today %}
+                            <span class="today-label">TODAY</span>
+                        {% endif %}
+                    </div>
+
                 </div>
 
                 <div
@@ -75,7 +91,7 @@
                                 <th>Unit</th>
                                 <th>Lecturer</th>
                                 <th>Mode</th>
-                                <th>Room</th>
+                                <th>Location</th>
                             </tr>
                         </thead>
 
@@ -96,15 +112,27 @@
                                         {% endif %}
 
                                         <span class="time-text">
-                                            {{ entry.start_time }}
-                                            -
-                                            {{ entry.end_time }}
+                                            {{ entry.start_time }} - {{ entry.end_time }}
                                         </span>
 
                                         {% if entry.status %}
+
                                             <div class="class-status {{ entry.status|lower }}">
-                                                {{ entry.status }}
+
+                                                {% if entry.status == "Ongoing" %}
+                                                    In Session
+                                                {% elif entry.status == "Upcoming" %}
+                                                    Next Up
+                                                {% elif entry.status == "Finished" %}
+                                                    Finished
+                                                {% elif entry.status == "Bounced" %}
+                                                    Cancelled
+                                                {% else %}
+                                                    {{ entry.status }}
+                                                {% endif %}
+
                                             </div>
+
                                         {% endif %}
 
                                     </td>
@@ -121,7 +149,7 @@
 
                                     </td>
 
-                                    <td>
+                                    <td class="lecturer-cell">
                                         {{ entry.lecturer }}
                                     </td>
 
@@ -147,7 +175,15 @@
 
                                         {% if entry.mode == "Physical" %}
 
-                                            {{ entry.room }}
+                                            {% if entry.room %}
+                                                <span class="location-text">
+                                                    {{ entry.room }}
+                                                </span>
+                                            {% else %}
+                                                <span class="location-muted">
+                                                    Room not set
+                                                </span>
+                                            {% endif %}
 
                                         {% else %}
 
@@ -164,7 +200,9 @@
 
                                             {% else %}
 
-                                                Online class
+                                                <span class="location-muted">
+                                                    Online class
+                                                </span>
 
                                             {% endif %}
 
@@ -182,21 +220,25 @@
 
                 </div>
 
-            </div>
+            </section>
 
         {% empty %}
 
-            <div class="empty-message">
+            <section class="empty-message">
 
-                <h3>No classes scheduled</h3>
+                <div class="empty-eyebrow">SCHEDULE</div>
 
-                <p>Your timetable is currently empty.</p>
+                <h2>No classes scheduled</h2>
 
-            </div>
+                <p>
+                    Your timetable is currently open.
+                </p>
+
+            </section>
 
         {% endfor %}
 
-    </div>
+    </main>
 
     <script src="{% static 'js/navigation.js' %}"></script>
 
